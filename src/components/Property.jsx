@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Button, Form, Modal, Table } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import "./Property.css"
+import React, { useState, useEffect } from "react";
+import { Card, Button, Form, Modal, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Property.css";
 
 const Property = () => {
   const [properties, setProperties] = useState([]);
   const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
+  const [clients, setClients] = useState([]);
   const [propertyData, setPropertyData] = useState({
-    address: '',
-    numberOfRooms: '',
-    size: '',
-    propertyType: '',
-    price: '',
-    image: '',
-    now: '',
-    clientId: '',
+    address: "",
+    numberOfRooms: "",
+    size: "",
+    propertyType: "",
+    price: "",
+    image: "",
+    now: "",
+    clientId: "",
   });
+
   const navigate = useNavigate();
   useEffect(() => {
     fetchProperties();
+    fetchClients();
   }, []);
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/property/getAll');
+      const response = await axios.get("http://localhost:8080/property/getAll");
       setProperties(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchClients = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/client/getAll");
+      setClients(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -44,19 +56,31 @@ const Property = () => {
 
   const handlePropertySubmit = async () => {
     try {
-      await axios.post('http://localhost:8080/property/add', propertyData);
-      // Perform any necessary actions after adding the property
-      fetchProperties(); // Update the property list
+      const selectedClient = clients.find((client) => client.id);
+      console.log(selectedClient);
+      const updatedPropertyData = {
+        ...propertyData,
+        propertyType: propertyData.propertyType, // Correct the property type key
+        client: {
+          id: selectedClient.id, // Assign the selected client ID
+        },
+      };
+
+      await axios.post(
+        "http://localhost:8080/property/add",
+        updatedPropertyData
+      );
+      fetchProperties();
       setShowAddPropertyModal(false);
       setPropertyData({
-        address: '',
-        numberOfRooms: '',
-        size: '',
-        propertyType: '',
-        price: '',
-        image: '',
-        now: '',
-        clientId: '',
+        address: "",
+        numberOfRooms: "",
+        size: "",
+        propertyType: "",
+        price: "",
+        image: "",
+        now: "",
+        clientId: "",
       });
     } catch (error) {
       console.log(error);
@@ -83,11 +107,16 @@ const Property = () => {
 
       <div className="card-container">
         {properties.map((property) => (
-          <Card key={property.id} style={{ width: '18rem', cursor: "-webkit-grab", cursor: "grab" }} className="property-card"  onClick={() => handleNavigateToProperty(property.id)}>
+          <Card
+            key={property.id}
+            style={{ width: "18rem", cursor: "-webkit-grab", cursor: "grab" }}
+            className="property-card"
+            onClick={() => handleNavigateToProperty(property.id)}
+          >
             <Card.Img variant="top" src={property.image} />
             <Card.Body>
               <Card.Title>{property.address}</Card.Title>
-              <Card.Text>Size: {property.size}m</Card.Text>
+              <Card.Text>Size: {property.size}</Card.Text>
               <Table striped bordered>
                 <thead>
                   <tr>
@@ -182,7 +211,11 @@ const Property = () => {
                 value={propertyData.clientId}
                 onChange={handlePropertyFormChange}
               >
-                {/* Render the list of clients */}
+                {clients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.id}
+                  </option>
+                ))}
               </Form.Control>
             </Form.Group>
           </Form>
