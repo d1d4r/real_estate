@@ -1,0 +1,16 @@
+.client {
+    padding: 20px;
+  }
+  
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  
+  .modal-body {
+    padding-bottom: 0;
+  }
+  
+  .modal-footer {
+    border-top: none;
+  }
+  
