@@ -25,7 +25,7 @@ public class Client {
 
     @JsonIgnore
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Sale> sales;
+    private List<Transaction> transactions;
 
 
     @JsonIgnore

@@ -7,7 +7,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Sidebar from "./Sidebar";
 import PropertyDetails from "./PropertyDetails";
-const RoutePage = () => {
+import MovieList from "./MovieList";
+const RoutePage = (props) => {
   return (
     <Router>
       <Container fluid>
@@ -21,6 +22,7 @@ const RoutePage = () => {
               <Route exact path="/property" element={<Property />} />
               <Route exact path="/transaction" element={<Transaction />} />
               <Route path="/property/get/:id" element={<PropertyDetails />} />
+              <Route path="/movie" element={<MovieList movies = {props.movies} />} />
             </Routes>
           </Col>
         </Row>

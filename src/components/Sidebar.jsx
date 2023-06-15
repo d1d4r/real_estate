@@ -19,6 +19,10 @@ const Sidebar = () => {
         <AiOutlineDollarCircle className="sidebar-icon" />
         <span className="sidebar-text">Transaction</span>
       </Nav.Link>
+      <Nav.Link as={Link} to="/movie">
+        <AiOutlineDollarCircle className="sidebar-icon" />
+        <span className="sidebar-text">Movies</span>
+      </Nav.Link>
     </Nav>
   );
 };

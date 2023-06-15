@@ -78,17 +78,20 @@ const Client = () => {
 
   return (
     <div className="client">
-      <div className="search-bar">
-        <input
+      <Form.Group controlId="formSearch">
+        <Form.Control
           type="text"
           placeholder="Search"
           value={searchTerm}
           onChange={handleSearch}
         />
-      </div>
+      </Form.Group>
+      <br></br>
       <Button variant="primary" onClick={handleAddClient}>
         Add Employee
       </Button>
+      <br></br>
+      <br></br>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -151,15 +154,11 @@ const Client = () => {
                 onChange={handleFormChange}
               />
             </Form.Group>
-            <Form.Group
-              controlId="formcontactInfo
-"
-            >
+            <Form.Group controlId="formContactInfo">
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 type="text"
-                name="contactInfo
-"
+                name="contactInfo"
                 value={clientData.contactInfo}
                 onChange={handleFormChange}
               />

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Modal, Form, Image } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 const PropertyDetails = () => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
@@ -12,13 +13,8 @@ const PropertyDetails = () => {
     price: "",
     buyerId: "",
   });
-    const [buyers, setBuyers] = useState([]);
-    
-    const navigate = useNavigate();
-
-    const handleNavigateToProperty = () => {
-        navigate(`/property`);
-      };
+  const [buyers, setBuyers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProperty();
@@ -73,6 +69,7 @@ const PropertyDetails = () => {
         transactionPayload
       );
       setShowTransactionForm(false);
+      console.log(transactionPayload)
     } catch (error) {
       console.log(error);
     }
@@ -80,23 +77,44 @@ const PropertyDetails = () => {
 
   const handleDeleteProperty = async () => {
     try {
-        await axios.delete(`http://localhost:8080/property/delete/${id}`);
-        handleNavigateToProperty()
-      // Perform any necessary actions after deleting the property
+      await axios.delete(`http://localhost:8080/property/delete/${id}`);
+      navigate("/property");
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleEditProperty = () => {
-    // Navigate to the property edit page or show the edit form
-    // You can use a router library like react-router-dom for navigation
+    setShowEditModal(true);
   };
+
+  const handleUpdateProperty = async () => {
+    try {
+      await axios.put(
+        `http://localhost:8080/property/update?id=${id}`,
+        editFormData
+      );
+      setShowEditModal(false);
+      fetchProperty();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    address: "",
+    numberOfRooms: "",
+    size: "",
+    propertyType: "",
+    price: "",
+    now: "",
+    clientId: "",
+  });
 
   if (!property) {
     return <div>Loading...</div>;
   }
-  
 
   return (
     <div>
@@ -193,6 +211,107 @@ const PropertyDetails = () => {
           </Button>
           <Button variant="primary" onClick={handleTransactionSubmit}>
             Add Transaction
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Property</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="editAddress">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                name="address"
+                value={editFormData.address}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, address: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editNumberOfRooms">
+              <Form.Label>Number of Rooms</Form.Label>
+              <Form.Control
+                type="text"
+                name="numberOfRooms"
+                value={editFormData.numberOfRooms}
+                onChange={(e) =>
+                  setEditFormData({
+                    ...editFormData,
+                    numberOfRooms: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editSize">
+              <Form.Label>Size</Form.Label>
+              <Form.Control
+                type="text"
+                name="size"
+                value={editFormData.size}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, size: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editPropertyType">
+              <Form.Label>Property Type</Form.Label>
+              <Form.Control
+                type="text"
+                name="propertyType"
+                value={editFormData.propertyType}
+                onChange={(e) =>
+                  setEditFormData({
+                    ...editFormData,
+                    propertyType: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editPrice">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="text"
+                name="price"
+                value={editFormData.price}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, price: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editnow">
+              <Form.Label>now</Form.Label>
+              <Form.Control
+                type="text"
+                name="now"
+                value={editFormData.now}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, now: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editClientId">
+              <Form.Label>Client ID</Form.Label>
+              <Form.Control
+                type="text"
+                name="clientId"
+                value={editFormData.clientId}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, clientId: e.target.value })
+                }
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleUpdateProperty}>
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

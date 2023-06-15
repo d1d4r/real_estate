@@ -7,7 +7,9 @@
   }
   .card-container{
     display: flex;
-    gap: 15px
+    gap: 15px;
+    flex-wrap: wrap;
+   
   }
   
   .property-list {

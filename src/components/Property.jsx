@@ -23,7 +23,7 @@ const Property = () => {
   useEffect(() => {
     fetchProperties();
     fetchClients();
-  }, []);
+  }, [propertyData.clientId]);
 
   const fetchProperties = async () => {
     try {
@@ -48,16 +48,26 @@ const Property = () => {
   };
 
   const handlePropertyFormChange = (e) => {
-    setPropertyData({
-      ...propertyData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "clientId") {
+      // Separate update for clientId
+      setPropertyData({
+        ...propertyData,
+        clientId: value,
+      });
+    } else {
+      // Update other fields
+      setPropertyData({
+        ...propertyData,
+        [name]: value,
+      });
+    }
   };
 
   const handlePropertySubmit = async () => {
     try {
       const selectedClient = clients.find((client) => client.id);
-      console.log(selectedClient);
       const updatedPropertyData = {
         ...propertyData,
         propertyType: propertyData.propertyType, // Correct the property type key
@@ -97,13 +107,13 @@ const Property = () => {
   return (
     <div>
       <h1>Properties</h1>
-      <br></br>
+      <br />
 
       <Button variant="primary" onClick={handleAddProperty}>
         Add Property
       </Button>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
 
       <div className="card-container">
         {properties.map((property) => (

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 
-public class SaleService {
+public class TransactionService {
     @Autowired
     com.example.projectgroup.repository.SaleRepo saleRepo;
     public Transaction createBuyer(Transaction transaction) {

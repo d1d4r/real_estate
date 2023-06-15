@@ -32,7 +32,7 @@ public class Property {
 
     @JsonIgnore
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
-    private List<Sale> sales;
+    private List<Transaction> transactions;
 
 
 
