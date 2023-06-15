@@ -1,7 +1,7 @@
 package com.example.projectgroup.service;
 
 
-import com.example.projectgroup.model.Sale;
+import com.example.projectgroup.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +14,23 @@ import java.util.Optional;
 public class SaleService {
     @Autowired
     com.example.projectgroup.repository.SaleRepo saleRepo;
-    public Sale createBuyer(Sale sale) {
-        return saleRepo.save(sale);
+    public Transaction createBuyer(Transaction transaction) {
+        return saleRepo.save(transaction);
     }
 
-    public List<Sale> getAll(){
+    public List<Transaction> getAll(){
 
         return saleRepo.findAll();
     }
 
-    public Optional<Sale> getSAle(Long id){
+    public Optional<Transaction> getSAle(Long id){
 
         return  saleRepo.findById(id);
     }
 
-    public void update( Sale sale){
+    public void update( Transaction transaction){
 
-        saleRepo.save(sale);
+        saleRepo.save(transaction);
     }
 
     public void delete(Long id){
